@@ -1,0 +1,17 @@
+{
+  "home": {
+    "name": "Olá 👋🏼 meu nome é Luan Faria",
+    "job": "Desenvolvedor Web Fullstack",
+    "description": "Especialista em criação de sites profissionais com foco em conversão e alta perfomance.",
+    "button": "Solicitar orçamento",
+    "portfolio": "Portfólio",
+    "seeAllPortfolio": "ver mais",
+    "posts": "Meu blog"
+  },
+  "navbar": {
+    "home": "inicio",
+    "about": "sobre",
+    "portfolio": "portfólio",
+    "blog": "blog"
+  }
+}

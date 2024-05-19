@@ -1,0 +1,232 @@
+---
+title: "Creating an API with Node.js"
+publishedAt: "2024-04-08"
+summary: "Learn how to create a basic API using Node.js, with examples of routing and handling requests."
+---
+
+# Creating an API with Node.js
+
+Let's create an API using Node.js. To do this, we need to have Node.js installed on our system. Depending on your operating system, there are several ways to install Node.js. Check the official Node.js documentation and follow the installation instructions at [nodejs.org/en](https://nodejs.org/en).
+
+> I recommend installing the LTS version.
+
+After installation, you can verify if everything was installed correctly using the following command in the terminal:
+
+```bash
+node -v
+```
+
+In this tutorial, I was using version `v18.15.0`
+
+```bash
+v18.15.0
+```
+
+### Initializing the project
+
+Let's start by creating a folder structure and creating the `index.js` file, which will be located in `src/index.js`.
+
+```javascript
+// index.js
+
+const http = require("http");
+
+const server = http.createServer((request, response) => {
+  response.writeHead(200, { "Content-Type": "text/html" });
+  response.end("<h1>Hello World!</h1>");
+});
+
+server.listen(3000, () =>
+  console.log("Server started at http://localhost:3000")
+);
+```
+
+To start the application, run the following command:
+
+```bash
+node index.js
+```
+
+### Adding routes
+
+Let's add a route to return a list of users. To do this, let's create a mock file `users.js`, located in `src/mocks/users.js`.
+
+```javascript
+// src/mocks/users.js
+
+module.exports = [
+  {
+    id: 1,
+    name: "Jhon",
+  },
+  {
+    id: 2,
+    name: "Doe",
+  },
+];
+```
+
+```javascript
+// index.js
+
+const http = require('http')
+const users = require('./mocks/users')
+
+const server = http.createServer((request, response) => {
+
+	if (request.method === '/users' && request.method === 'GET') {
+		response.writeHead(200, { 'Content-Type': 'application/json' })
+		response.end(JSON.stringify(users)
+	} else {
+	  response.writeHead(404, { 'Content-Type': 'text/html' })
+	  response.end(`Cannot ${request.method} ${request.url}`)
+	}
+})
+
+server.listen(3000, () => console.log('Server started at http://localhost:3000'))
+```
+
+To improve the structure, let's create a controller `UserController.js` in the `src/controllers` folder.
+
+```javascript
+// src/controllers/UserController.js
+
+const users = require("../mocks/users");
+
+module.exports = {
+  listUsers(request, response) {
+    response.writeHead(200, { "Content-Type": "application/json" });
+    response.end(JSON.stringify(users));
+  },
+};
+```
+
+```javascript
+// index.js
+
+const http = require("http");
+
+const UserController = require("./controllers/UserController");
+
+const server = http.createServer((request, response) => {
+  console.log(`Request method: ${request.method} | Endpoint: ${request.url}`);
+
+  if (request.method === "/users" && request.method === "GET") {
+    UserController.listUsers(request, response);
+  } else {
+    response.writeHead(404, { "Content-Type": "text/html" });
+    response.end(`Cannot ${request.method} ${request.url}`);
+  }
+});
+
+server.listen(3000, () =>
+  console.log("Server started at http://localhost:3000")
+);
+```
+
+The return remains our user mock:
+
+```json
+// Response when accessing our URL
+
+[
+  {
+    "id": 1,
+    "name": "Luan"
+  },
+  {
+    "id": 2,
+    "name": "Tamirys"
+  }
+]
+```
+
+To improve the routes, let's create a new file in the root of the project `src/routes.js`.
+
+```javascript
+// routes.js
+
+const UserController = require("./controllers/UserController");
+
+module.exports = [
+  {
+    endpoint: "/users",
+    method: "GET",
+    handler: UserController.listUsers,
+  },
+];
+```
+
+And `index.js`
+
+```javascript
+// index.js
+
+const http = require("http");
+
+const routes = require("./routes");
+
+const server = http.createServer((request, response) => {
+  console.log(`Request method: ${request.method} | Endpoint: ${request.url}`);
+
+  const route = routes.find(
+    (routeObj) =>
+      routeObj.endpoint === request.url && routeObj.method === request.method
+  );
+
+  if (route) {
+    route.handler(request, response);
+  } else {
+    response.writeHead(404, { "Content-Type": "text/html" });
+    response.end(`Cannot ${request.method} ${request.url}`);
+  }
+});
+
+server.listen(3000, () =>
+  console.log("Server started at http://localhost:3000")
+);
+```
+
+Adding Query Params:
+
+```javascript
+// index.js
+
+const http = require("http");
+const url = require("url");
+const routes = require("./routes");
+
+const server = http.createServer((request, response) => {
+  console.log(`Request method: ${request.method} | Endpoint: ${request.url}`);
+
+  const route = routes.find(
+    (routeObj) =>
+      routeObj.endpoint === request.url && routeObj.method === request.method
+  );
+
+  if (route) {
+    route.handler(request, response);
+  } else {
+    response.writeHead(404, { "Content-Type": "text/html" });
+    response.end(`Cannot ${request.method} ${request.url}`);
+  }
+});
+
+server.listen(3000, () =>
+  console.log("Server started at http://localhost:3000")
+);
+```
+
+## Summary
+
+In this tutorial, we learned how to create a basic API using Node.js. We covered the following steps:
+
+1. Initializing the project by creating the folder structure and `index.js` file.
+2. Adding routes to handle different endpoints, including returning a list of users.
+3. Improving the structure by creating a controller to handle the business logic.
+4. Refactoring the routes to a separate file for better organization.
+5. Adding query parameters to the routes for more dynamic behavior.
+
+By following this tutorial, you've gained foundational knowledge on how to create a simple API with Node.js. Understanding these concepts will enable you to build more complex APIs and web applications in the future. Additionally, learning to structure your code in a modular and organized manner will make your projects more maintainable and scalable.
+
+Published by [Luan Faria](https://github.com/luuanfaria).

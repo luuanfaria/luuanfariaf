@@ -1,0 +1,17 @@
+{
+  "home": {
+    "name": "Hello there 👋🏼 I'm Luan Faria",
+    "job": "Fullstack Web Developer",
+    "description": "Specialist in create professional websites focused in conversion and high perfomance.",
+    "button": "Request quote",
+    "portfolio": "Portfolio",
+    "seeAllPortfolio": "see all",
+    "posts": "Posts"
+  },
+  "navbar": {
+    "home": "home",
+    "about": "about",
+    "portfolio": "portfolio",
+    "blog": "blog"
+  }
+}
