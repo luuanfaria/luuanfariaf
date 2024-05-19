@@ -1,36 +1,59 @@
-import Link from 'next/link'
-import { getBlogPosts } from '@/app/[locale]/blog/utils'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import Image, { StaticImageData } from 'next/image'
+import Detail from '@/assets/images/detail.png'
+import Dilson from '@/assets/images/dilson.png'
+import Dubles from '@/assets/images/dubles.png'
+
+export interface WorkProps {
+  title: string
+  type: string
+  image: StaticImageData
+}
+
+export const works: WorkProps[] = [
+  {
+    title: 'Detail Club Garage',
+    type: 'Website',
+    image: Detail,
+  },
+  {
+    title: 'Dilson R. Ramos',
+    type: 'Landing Page',
+    image: Dilson,
+  },
+  {
+    title: 'Dubles & Atores',
+    type: 'Website',
+    image: Dubles,
+  },
+]
 
 export function Projects() {
-  const allBlogs = getBlogPosts()
-
   return (
-    <div>
-      {allBlogs
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1
-          }
-          return 1
-        })
-        .map((post) => (
-          <Link
-            key={post.slug}
-            className="flex flex-col space-y-1 mb-4"
-            href={`/en/blog/${post.slug}`}
-          >
-            <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
-              <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">
-                Landing Page
-              </p>
-              <p className="text-neutral-200 dark:text-neutral-100 tracking-tight">
-                {post.metadata.title}
-              </p>
+    <ScrollArea className="w-full whitespace-nowrap rounded-md">
+      <div className="flex w-max space-x-4 p-4">
+        {works.map((work) => (
+          <figure key={work.title} className="shrink-0">
+            <div className="overflow-hidden rounded-md">
+              <Image
+                src={work.image}
+                alt={`Photo by ${work.title}`}
+                className="aspect-[5/4] h-fit w-fit object-cover"
+                width={340}
+                height={400}
+                quality={100}
+              />
             </div>
-          </Link>
+            <figcaption className="pt-2 text-xs text-muted-foreground">
+              {work.type}{' '}
+              <span className="font-semibold text-foreground">
+                {work.title}
+              </span>
+            </figcaption>
+          </figure>
         ))}
-    </div>
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }
