@@ -1,18 +1,37 @@
+'use client'
 import { ImageSlicer } from '@/components/imageSlicer'
 import { BlogPosts } from '@/components/posts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ArrowUpRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { unstable_setRequestLocale as unstableSetRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
-interface HomeProps {
-  params: { locale: string }
-}
-
-export default function Home({ params: { locale } }: HomeProps) {
-  unstableSetRequestLocale(locale)
+export default function Home() {
   const t = useTranslations('home')
+  const [isMounted, setIsMounted] = useState(false)
+  const [currentDescription, setCurrentDescription] = useState(0)
+  const descriptions = [t('description1'), t('description2'), t('description3')]
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDescription(
+        (prevDescription) => (prevDescription + 1) % descriptions.length,
+      )
+    }, 3000)
+
+    return () => clearInterval(intervalId)
+  }, [descriptions.length])
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4">
@@ -26,7 +45,22 @@ export default function Home({ params: { locale } }: HomeProps) {
           <p className="text-base">{t('job')}</p>
         </div>
       </div>
-      <p className="text-3xl font-semibold">{t('description')}</p>
+
+      <div className="relative h-24">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={currentDescription}
+            className="text-3xl font-semibold absolute w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            {descriptions[currentDescription]}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
       <button className="flex items-center gap-1 w-max rounded-xl hover:opacity-95 bg-zinc-900 hover:cursor-pointer p-2">
         <ArrowUpRight width={20} height={20} /> {t('button')}
       </button>

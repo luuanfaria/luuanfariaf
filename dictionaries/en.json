@@ -2,7 +2,9 @@
   "home": {
     "name": "Hello there 👋🏼 I'm Luan Faria",
     "job": "Fullstack Web Developer",
-    "description": "Specialist in create professional websites focused in conversion and high perfomance.",
+    "description1": "Specialist in creating professional websites focused on conversion and high performance",
+    "description2": "I create on-demand apps to boost your business",
+    "description3": "Turning ideas into decentralized solutions with Web3",
     "button": "Request quote",
     "portfolio": "Portfolio",
     "seeAllPortfolio": "see all",

@@ -17,7 +17,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Luan Faria',
-  description: 'Web Dev',
+  description: 'a Web Dev lets build something amazing?',
 }
 
 interface RootLayoutProps {
@@ -40,7 +40,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={inter.variable}>
-      <body className="bg-zinc-950 text-zinc-50 antialiased min-h-screen">
+      <body
+        className="bg-zinc-950 text-zinc-50 antialiased min-h-screen"
+        suppressHydrationWarning={true}
+      >
         <NextIntlClientProvider messages={messages}>
           <div className="flex flex-col w-full max-w-xl mx-auto px-4 pt-8 lg:px-0 gap-16">
             <Navbar />
