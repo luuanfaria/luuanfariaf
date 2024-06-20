@@ -43,26 +43,27 @@ export default async function PostPage({
 }: {
   params: { slug: string }
 }) {
-  const markdown = await readPostFile(params.slug)
+  try {
+    const markdown = await readPostFile(params.slug)
+    if (!markdown) {
+      notFound()
+    }
 
-  if (!markdown) {
-    notFound()
+    return (
+      <section>
+        <article className="prose">
+          <MDXRemote components={components} source={markdown} />
+        </article>
+      </section>
+    )
+  } catch (error) {
+    console.error('Error rendering the post:', error)
+    return (
+      <section>
+        <article className="prose">
+          <p>Error loading the post. Please try again later.</p>
+        </article>
+      </section>
+    )
   }
-
-  // TODO: Metadata
-  // const {
-  //   content,
-  //   frontmatter: { title, publishedAt, summary },
-  // } = await compileMDX({
-  //   source: markdown,
-  //   options: { parseFrontmatter: true },
-  // })
-
-  return (
-    <section>
-      <article className="prose">
-        <MDXRemote components={components} source={markdown} />
-      </article>
-    </section>
-  )
 }
