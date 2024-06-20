@@ -4,6 +4,7 @@ import { readFile, access } from 'fs/promises'
 import { notFound } from 'next/navigation'
 import 'tailwindcss/tailwind.css'
 import { Code, H1, H2, H3, H4, H5, Pre, Strong } from '@/components/markdown'
+import ErrorBoundary from '@/components/errorBoundry'
 
 const POSTS_FOLDER = path.join(
   process.cwd(),
@@ -59,10 +60,12 @@ export default async function PostPage({
   // })
 
   return (
-    <section>
-      <article className="prose">
-        <MDXRemote components={components} source={markdown} />
-      </article>
-    </section>
+    <ErrorBoundary>
+      <section>
+        <article className="prose">
+          <MDXRemote components={components} source={markdown} />
+        </article>
+      </section>
+    </ErrorBoundary>
   )
 }
