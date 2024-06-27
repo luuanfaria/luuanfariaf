@@ -1,32 +1,6 @@
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import Image, { StaticImageData } from 'next/image'
-import Detail from '@/assets/images/detail.png'
-import Dilson from '@/assets/images/dilson.png'
-import Dubles from '@/assets/images/dubles.png'
-
-export interface WorkProps {
-  title: string
-  type: string
-  image: StaticImageData
-}
-
-export const works: WorkProps[] = [
-  {
-    title: 'Detail Club Garage',
-    type: 'Website',
-    image: Detail,
-  },
-  {
-    title: 'Dilson R. Ramos',
-    type: 'Landing Page',
-    image: Dilson,
-  },
-  {
-    title: 'Dubles & Atores',
-    type: 'Website',
-    image: Dubles,
-  },
-]
+import Image from 'next/image'
+import works from '@/data/works'
 
 export function Projects() {
   return (
